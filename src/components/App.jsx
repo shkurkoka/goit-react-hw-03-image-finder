@@ -31,7 +31,7 @@ export class App extends Component {
       
       this.setState({ search: search });
 
-      // await new Promise((resolve) => setTimeout(resolve, 10000));
+      // await new Promise((resolve) => setTimeout(resolve, 4000));
 
       try {
         const response = await axios.get(`?q=${search}&page=1&key=${key}&image_type=photo&orientation=horizontal&per_page=12`);
@@ -51,6 +51,8 @@ export class App extends Component {
   loadMore = async () => {
     this.setState({ isLoading: true });
     try {
+      // await new Promise((resolve) => setTimeout(resolve, 4000));
+
       const nextPage = this.state.page + 1;
       const response = await axios.get(`?q=${this.state.search}&page=${nextPage}&key=${key}&image_type=photo&orientation=horizontal&per_page=12`);
       this.setState({
@@ -74,27 +76,33 @@ export class App extends Component {
     const { isLoading, error, searchArr, totalHits } = this.state;
 
     return (
-      <div>
+      <div className="App">
         <Searchbar onSubmit={this.onSubmit} />
         
         {error && <p>Whoops, something went wrong: {error.message}</p>}
-        {
-          isLoading && <Oval
-            height={80}
-            width={80}
-            color="darkblue"
-            wrapperStyle={{}}
-            wrapperClass=""
-            visible={true}
-            ariaLabel='oval-loading'
-            secondaryColor="#3f51b5"
-            strokeWidth={3}
-            strokeWidthSecondary={5}
-          />
-        }
+
         {searchArr.length > 0 && <ImageGallery searchArr={searchArr} />}
 
-        {searchArr.length < totalHits && <Button loadMore={this.loadMore} />}
+        {
+          isLoading &&
+          <div className="loading">
+            <Oval
+              height={80}
+              width={80}
+              color="darkblue"
+              wrapperStyle={{}}
+              wrapperClass=""
+              visible={true}
+              ariaLabel='oval-loading'
+              secondaryColor="#3f51b5"
+              strokeWidth={3}
+              strokeWidthSecondary={5}
+              
+            />
+          </div>
+        }
+
+        {!isLoading && searchArr.length < totalHits && <Button loadMore={this.loadMore} />}
         
       </div>
     )
