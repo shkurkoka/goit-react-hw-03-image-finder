@@ -8,9 +8,9 @@ const Modal = ({ imageURL, onClose }) => {
   };
 
   return (
-    <div className="Overlay" onClick={onClose}>
+    <div className="Overlay" onClick={onClose} onKeyDown={(e) => handleKeyDown(e)} tabIndex="0">
       <div className="Modal" onClick={(e) => e.stopPropagation()}>
-        <img src={imageURL} alt="Large version of the image" onKeyDown={(e) => handleKeyDown(e)} />
+        <img src={imageURL} alt="Large version" />
       </div>
     </div>
   );
